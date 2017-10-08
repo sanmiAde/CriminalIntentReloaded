@@ -1,15 +1,17 @@
 package com.sanmiaderibigbe.criminalintentreloaded;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
-public class CrimeActivity extends AppCompatActivity
+public class CrimeActivity extends SingleFragmentActivity
 {
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected Fragment createFragment()
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crime);
+        return new CrimeFragment();
     }
 }
