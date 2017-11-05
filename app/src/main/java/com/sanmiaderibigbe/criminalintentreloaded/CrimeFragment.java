@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.util.UUID;
+
 /**
  * Created by oluwasanmi on 10/4/17.
  */
@@ -23,12 +25,25 @@ public class CrimeFragment extends Fragment
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckButton;
+    private static final  String CRIME_ARGS_ID = "crime_id";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        mCrime = new Crime();
+        UUID crimeID = (UUID) getArguments().getSerializable(CRIME_ARGS_ID);
+        mCrime = CrimeLab.getCrimeLab(getActivity()).getCrime(crimeID);
+    }
+
+    public static CrimeFragment newInstance(UUID id)
+    {
+        Bundle args = new Bundle();
+        args.putSerializable(CRIME_ARGS_ID, id);
+
+        CrimeFragment crimeFragment = new CrimeFragment();
+        crimeFragment.setArguments(args);
+
+        return crimeFragment;
     }
 
     @Nullable
@@ -39,6 +54,7 @@ public class CrimeFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
 
         mTitleField  = v.findViewById(R.id.crime_title);
+        mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -65,6 +81,7 @@ public class CrimeFragment extends Fragment
         mDateButton.setEnabled(false);
 
         mSolvedCheckButton = v.findViewById(R.id.crime_solved);
+        mSolvedCheckButton.setChecked(mCrime.isSolved());
         mSolvedCheckButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
